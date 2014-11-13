@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mytube',
+    'embed_video',
 )
 
 MIDDLEWARE_CLASSES = (

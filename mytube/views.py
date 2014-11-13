@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from mytube.bing_search import run_query
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 def index(request):
     context = RequestContext(request)
@@ -80,6 +80,35 @@ def genre(request, genre_name_url):
     #         result_list = run_query(query)
     #         context_dict['result_list'] = result_list
     return render_to_response('mytube/genre.html', context_dict, context)
+
+def movie(request, genre_name_url, movie_id):
+
+    context = RequestContext(request)
+    genre_name = decode_url(genre_name_url)
+    m = get_object_or_404(Movie, pk=movie_id)
+
+    context_dict = {'genre_name': genre_name,
+                    'genre_name_url': genre_name_url,
+                    'movie_name': m.title,
+                    'movie_youtube_url': m.url,
+                    'movie_pg': m.pg,
+                    'movie_genre': m.genre}
+
+    # try:
+    #     movie = Movie.objects.get(genre=genre_name,  )
+    #     context_dict['movies'] = movies
+    #     context_dict['genre'] = genre
+    # except Movie.DoesNotExist:
+    #     pass
+    #     # return HttpResponse("This genre doesn't exist")
+
+    # if request.method == 'POST':
+    #
+    #     query = request.POST['query'].strip()
+    #     if query:
+    #         result_list = run_query(query)
+    #         context_dict['result_list'] = result_list
+    return render_to_response('mytube/movie.html', context_dict, context)
 
 def about(request):
     context = RequestContext(request)

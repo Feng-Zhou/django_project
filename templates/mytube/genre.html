@@ -11,7 +11,7 @@
                 <ul>
                     {% for movie in movies %}
                     <li>
-                        <a href="/mytube/goto/?movie_id={{movie.id}}">{{movie.title}}</a>
+                        <a href="/mytube/movie/genre_name_url/{{ movie.id }}">{{movie.title}}</a>
                         {% if movie.views > 1 %}
                             - ({{ movie.views }} views)
                         {% elif movie.views == 1 %}
