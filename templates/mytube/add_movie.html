@@ -1,0 +1,26 @@
+{% extends 'mytube/base.html' %}
+{% block title %}{{ genre_name }}{% endblock %}
+
+{% block body_block %}
+    <div class="hero-unit">
+        <h1>Add a Movie to Genre: {{ genre_name_url }}</h1>
+        <br />
+        <div class="container">
+            <form class="span6" id="movie_form" method="post" action="/mytube/genre/{{ genre_name_url }}/add_movie/">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% for field in form.visible_fields %}
+                    {{ field.errors }}
+                    {{ field.help_text }}<br />
+                    {{ field }}<br />
+                {% endfor %}
+
+                <br />
+                <button class="btn btn-primary" type="submit" name="submit">Add</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

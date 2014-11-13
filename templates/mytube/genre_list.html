@@ -1,0 +1,9 @@
+<ul class="nav nav-list">
+    {% if genre_list %}
+        {% for genre in genre_list %}
+            <li><a href="/mytube/genre/{{ genre.url }}">{{ genre.name }}</a></li>
+        {% endfor %}
+    {% else %}
+        <li>No genres at present.</li>
+    {% endif %}
+</ul>

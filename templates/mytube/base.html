@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head lang="en">
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+        <title>mytube - {% block title %}Free Movies on Youtube!{% endblock %}</title>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+               <div class="container">
+                   <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                       <span class="icon-bar"></span>
+                       <span class="icon-bar"></span>
+                       <span class="icon-bar"></span>
+                   </button>
+                   <a class="brand" href="/mytube/">MyTube</a>
+
+                   <div class="nav-collapse collapse">
+                       <ul class="nav pull-right">
+                           {% if user.is_authenticated %}
+                            <li class="navbar-text">Welcome, {{ user.username }}!</li>
+                            <li><a href="/mytube/profile">Profile</a></li>
+                            <li><a href="/mytube/logout/">Logout</a></li>
+                           {% else %}
+                            <li><a href="/mytube/register/">Register</a></li>
+                            <li><a href="/mytube/login/">Login</a></li>
+                           {% endif %}
+                       </ul>
+                       <ul class="nav">
+                           {% if user.is_authenticated %}
+                            <li><a href="/mytube/add_genre/">Add Genre</a></li>
+                           {% endif %}
+                           <li><a href="/mytube/about/">About</a></li>
+                       </ul>
+                   </div>
+                   <!--/.nav-collapse -->
+               </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3">
+                    <div class="well sidebar-nav">
+                        {% block sidebar %}
+                        {% endblock %}
+                        <!--<div id="cats">-->
+                            <!--{% if cat_list %}-->
+                                <!--<ul class="nav nav-list"><li>Category List</li></ul>-->
+                                <!--{% include 'mytube/genre_list.html' with cat_list=cat_list %}-->
+                            <!--{% endif %}-->
+                        <!--</div>-->
+
+
+                        {% if genre_list %}
+                            <div id="genres">
+                                {% include 'mytube/genre_list.html' with genre_list=genre_list %}
+                            </div>
+                        {% endif %}
+
+                        <hr>
+
+                        <ul class="nav nav-list">
+                            <li class="nav-header">Find a Movie</li>
+                            <form>
+                                <label></label>
+                                <li><input  class="search-query span10" type="text" name="suggestion" value="" id="suggestion" /></li>
+                            </form>
+                        </ul>
+
+                    </div>
+                    <!--/.well -->
+                </div>
+                <!--/span-->
+                <div class="span9">
+                    {% block body_block %}
+                    {% endblock %}
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            
+            <hr>
+            
+            <footer>
+                <p>&copy; MyTube: Find, Add, Share free movies on YouTube! 2014</p>
+            </footer>
+            
+        </div>
+        <!--/.fluid-container-->
+        <script src="{% static 'js/jquery-2.1.1.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/mytube-ajax.js' %}"></script>
+    </body>
+
+
+</html>

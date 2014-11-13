@@ -1,0 +1,73 @@
+{% extends 'mytube/base.html' %}
+
+{% block title %}{{ genre_name }}{% endblock %}
+
+{% block body_block %}
+    <div class="hero-unit">
+        <div class="container">
+            <h1>{{ genre_name }}</h1>
+            <br />
+            {% if movies %}
+                <ul>
+                    {% for movie in movies %}
+                    <li>
+                        <a href="/mytube/goto/?movie_id={{movie.id}}">{{movie.title}}</a>
+                        {% if movie.views > 1 %}
+                            - ({{ movie.views }} views)
+                        {% elif movie.views == 1 %}
+                            - ({{ movie.views }} view)
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>No movies currently in genre.</strong>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <a href="/mytube/genre/{{ genre_name_url }}/add_movie/">Add a Movie</a>
+            {% endif %}
+
+            <div class = "container-fluid">
+                <p>Search for a movie.</p>
+                <form class="form-search span8" id="search_form" method="post" action="/mytube/genre/{{ genre_name_url }}/">
+                    {% csrf_token %}
+                    <!-- Display the search form elements here -->
+                    <input type="text" size="50" class="input-long search-query" name="query" value="{{ genre_name }}" id="query" />
+                    <button class="btn btn-success" type="submit" name="submit" value="Search"></button>
+                </form>
+            </div>
+
+            <div class="container-fluid">
+                {% if result_list %}
+                    <!-- Display search results in an ordered list -->
+                    <ol>
+                        {% for result in result_list %}
+                        <li>
+                            <strong><a href="{{ result.link }}">{{ result.title }}</a></strong><br />
+                            <p>{{ result.summary }}</p>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <br/>
+                    <p>No results found</p>
+                {% endif %}
+
+                <p>
+                    <b id="like_count">{{ genre.likes }}</b> people like this genre
+
+                    {% if user.is_authenticated %}
+                            <button id ="likes" data-genreid="{{genre.id}}" class="btn btn-mini btn-primary" type="button">Like</button>
+                    {% endif %}
+                </p>
+                <!---->
+                <!--<form class="form-search span8" id="like_form" method="post" action="/mytube/genre/{{ genre_name_url }}/">-->
+                    <!--{% csrf_token %}-->
+                    <!--<button class="btn btn-primary" type="submit" name="like" value="Like" id="like">Like</button>-->
+                    <!--<div id="like_count">{{ genre.likes }} </div>-->
+                <!--</form>-->
+            </div>
+        </div>
+    </div>
+{% endblock %}
