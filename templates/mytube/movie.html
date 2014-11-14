@@ -8,7 +8,13 @@
         <div class="container">
             <h1>{{ movie_name }}</h1>
             <hr>
-            {{ movie_youtube_url|embed:'560x315' }}
+
+
+            {% video movie_video as my_video %}
+                {% video my_video 'small' %}
+            {% endvideo %}
+
+            <!--video.video.url|embed:'560x315' -->
             <hr>
             <ul>
                 <li>Genre: {{ genre_name }} </li>

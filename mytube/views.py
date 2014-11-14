@@ -90,7 +90,7 @@ def movie(request, genre_name_url, movie_id):
     context_dict = {'genre_name': genre_name,
                     'genre_name_url': genre_name_url,
                     'movie_name': m.title,
-                    'movie_youtube_url': m.url,
+                    'movie_video': m.video,
                     'movie_pg': m.pg,
                     'movie_genre': m.genre}
 

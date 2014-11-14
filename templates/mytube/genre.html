@@ -1,4 +1,5 @@
 {% extends 'mytube/base.html' %}
+{% load embed_video_tags %}
 
 {% block title %}{{ genre_name }}{% endblock %}
 
@@ -11,7 +12,13 @@
                 <ul>
                     {% for movie in movies %}
                     <li>
-                        <a href="/mytube/movie/genre_name_url/{{ movie.id }}">{{movie.title}}</a>
+                        {% video movie.video as movie_video %}
+                            <a href="/mytube/movie/genre_name_url/{{ movie.id }}">
+                            {{movie.title}}<br />
+                            <img src="{{ movie_video.thumbnail }}" height="200" width="200"/>
+                            </a>
+                        {% endvideo %}
+
                         {% if movie.views > 1 %}
                             - ({{ movie.views }} views)
                         {% elif movie.views == 1 %}
