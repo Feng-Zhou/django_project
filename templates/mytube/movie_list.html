@@ -1,0 +1,10 @@
+<ul class="nav nav-list">
+    {% if movie_list %}
+        <h3 class="nav-header">Movie Search Result</h3>
+        {% for movie in movie_list %}
+            <li><a href="/mytube/movie/{{ movie.id }}">{{ movie.title }}</a></li>
+        {% endfor %}
+    {% else %}
+        <li>No movies meet search criteria.</li>
+    {% endif %}
+</ul>

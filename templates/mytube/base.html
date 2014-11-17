@@ -7,7 +7,7 @@
         <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
         <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
-        <title>mytube - {% block title %}Free Movies on Youtube!{% endblock %}</title>
+        <title>mytube - {% block title %}Share Free Movies on Youtube!{% endblock %}</title>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,7 +33,7 @@
                        </ul>
                        <ul class="nav">
                            {% if user.is_authenticated %}
-                            <li><a href="/mytube/add_genre/">Add Genre</a></li>
+                            <li><a href="/mytube/add_movie/">Add a Movie</a></li>
                            {% endif %}
                            <li><a href="/mytube/about/">About</a></li>
                        </ul>
@@ -48,47 +48,47 @@
                 <div class="span3">
                     <div class="well sidebar-nav">
                         {% block sidebar %}
-                        {% endblock %}
-                        <!--<div id="cats">-->
-                            <!--{% if cat_list %}-->
-                                <!--<ul class="nav nav-list"><li>Category List</li></ul>-->
-                                <!--{% include 'mytube/genre_list.html' with cat_list=cat_list %}-->
-                            <!--{% endif %}-->
-                        <!--</div>-->
-
-
-                        {% if genre_list %}
-                            <div id="genres">
-                                {% include 'mytube/genre_list.html' with genre_list=genre_list %}
-                            </div>
-                        {% endif %}
-
-                        <hr>
 
                         <ul class="nav nav-list">
                             <li class="nav-header">Find a Movie</li>
                             <form>
                                 <label></label>
-                                <li><input  class="search-query span10" type="text" name="suggestion" value="" id="suggestion" /></li>
+                                <li>
+                                    <select id="genre">
+                                        <option value="0">Select A Genre...</option>
+                                        {% for genre in genre_list %}
+                                            <option value="{{ genre.id }}">{{ genre.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </li>
+                                <li>Name<input type="text" name="title" value="" id="title" /></li>
+                                <li>PG Level<input type="number" name="pg" value="0" id="pg"></input></li>
                             </form>
                         </ul>
 
+                        <button id ="search" class="btn btn-mini btn-primary" type="button">Search</button>
+
+                        <div id="movies">
+                            {% if movie_list %}
+                                <ul class="nav nav-list"><li>Search Result</li></ul>
+                                {% include 'mytube/movie_list.html' with movie_list=movie_list %}
+                            {% endif %}
+                        </div>
+                        {% endblock %}
                     </div>
-                    <!--/.well -->
                 </div>
-                <!--/span-->
+
                 <div class="span9">
                     {% block body_block %}
                     {% endblock %}
                 </div>
-                <!--/span-->
             </div>
             <!--/row-->
             
             <hr>
             
             <footer>
-                <p>&copy; MyTube: Find, Add, Share free movies on YouTube! 2014</p>
+                <p>&copy; 2014 MyTube: Share free movies on YouTube! Powered by Django</p>
             </footer>
             
         </div>

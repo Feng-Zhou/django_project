@@ -3,10 +3,10 @@
 
 {% block body_block %}
     <div class="hero-unit">
-        <h1>Add a Movie to Genre: {{ genre_name_url }}</h1>
+        <h1>Add a Movie</h1>
         <br />
         <div class="container">
-            <form class="span6" id="movie_form" method="post" action="/mytube/genre/{{ genre_name_url }}/add_movie/">
+            <form class="span6" id="movie_form" method="post" action="/mytube/add_movie/">
                 {% csrf_token %}
                 {% for hidden in form.hidden_fields %}
                     {{ hidden }}

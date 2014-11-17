@@ -1,8 +1,16 @@
 <ul class="nav nav-list">
     {% if genre_list %}
-        {% for genre in genre_list %}
-            <li><a href="/mytube/genre/{{ genre.url }}">{{ genre.name }}</a></li>
-        {% endfor %}
+        <h3 class="nav-header">Genre</h3>
+        <!--{% for genre in genre_list %}-->
+            <!--<li><a href="/mytube/genre/{{ genre.url }}">{{ genre.name }}</a></li>-->
+        <!--{% endfor %}-->
+
+        <select>
+            {% for genre in genre_list %}
+                <option value="{{ genre.name }}">{{ genre.name }}</option>
+                <!--<li><a href="/mytube/genre/{{ genre.url }}">{{ genre.name }}</a></li>-->
+            {% endfor %}
+        </select>
     {% else %}
         <li>No genres at present.</li>
     {% endif %}

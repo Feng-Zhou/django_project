@@ -11,19 +11,19 @@ class GenreForm(forms.ModelForm):
         model = Genre
 
 class MovieForm(forms.ModelForm):
-
+    genre = forms.ModelChoiceField(queryset=Genre.objects.all(), help_text="Please select a genre.")
+    # genre = forms.ModelMultipleChoiceField(queryset=Genre.objects.all())
     title = forms.CharField(max_length=128, help_text="Please enter the title of the movie.")
     #year = forms.DateTimeField(datetime.year, help_text="Please enter the year of the movie.")
-    pg = forms.IntegerField(help_text="Please enter pg level of the movie.")
+    pg = forms.IntegerField(help_text="Please enter pg level of the movie.", initial=0)
     video = EmbedVideoFormField(help_text="Please enter the URL of the youtube page.", initial="")
-    # url = forms.URLField(max_length=200, help_text="Please enter the URL of the youtube page.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
     class Meta:
         model = Movie
         # fields = ('title', 'year', 'pg', 'url', 'views', 'likes')
-        fields = ('title', 'pg', 'video', 'views', 'likes')
+        fields = ('genre', 'title', 'pg', 'video', 'views', 'likes')
 
     # def clean(self):
     #     cleaned_data = self.cleaned_data

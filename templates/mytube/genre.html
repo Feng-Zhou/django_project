@@ -5,15 +5,15 @@
 
 {% block body_block %}
     <div class="hero-unit">
-        <div class="container">
-            <h1>{{ genre_name }}</h1>
+        <div class="container-fluid">
+            <h1>Genre: {{ genre_name }}</h1>
             <br />
             {% if movies %}
                 <ul>
                     {% for movie in movies %}
                     <li>
                         {% video movie.video as movie_video %}
-                            <a href="/mytube/movie/genre_name_url/{{ movie.id }}">
+                            <a href="/mytube/movie/{{ movie.id }}">
                             {{movie.title}}<br />
                             <img src="{{ movie_video.thumbnail }}" height="200" width="200"/>
                             </a>
@@ -24,6 +24,7 @@
                         {% elif movie.views == 1 %}
                             - ({{ movie.views }} view)
                         {% endif %}
+                        <hr>
                     </li>
                     {% endfor %}
                 </ul>

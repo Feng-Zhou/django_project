@@ -16,7 +16,7 @@ from django.shortcuts import redirect, get_object_or_404
 def index(request):
     context = RequestContext(request)
     genre_list = Genre.objects.order_by('-likes')[:5]
-    movie_list = Movie.objects.order_by('-views')[:5]
+    movie_list = Movie.objects.order_by('id')[:5]
 
     genre_list = get_genre_list()
     context_dict = {'genres': genre_list, 'movies': movie_list}
@@ -81,18 +81,20 @@ def genre(request, genre_name_url):
     #         context_dict['result_list'] = result_list
     return render_to_response('mytube/genre.html', context_dict, context)
 
-def movie(request, genre_name_url, movie_id):
+def movie(request, movie_id):
 
     context = RequestContext(request)
-    genre_name = decode_url(genre_name_url)
     m = get_object_or_404(Movie, pk=movie_id)
+    genre = m.genre
+    genre_list = get_genre_list()
 
-    context_dict = {'genre_name': genre_name,
-                    'genre_name_url': genre_name_url,
-                    'movie_name': m.title,
+    context_dict = {'movie_name': m.title,
                     'movie_video': m.video,
                     'movie_pg': m.pg,
-                    'movie_genre': m.genre}
+                    'movie_genre': m.genre,
+                    'genre_name': genre.name,
+                    'genre_list': genre_list
+                    }
 
     # try:
     #     movie = Movie.objects.get(genre=genre_name,  )
@@ -141,35 +143,49 @@ def add_genre(request):
 
     return render_to_response('mytube/add_genre.html', context_dict, context)
 
-def add_movie(request, genre_name_url):
+def add_movie(request):
     context = RequestContext(request)
-    genre_name = decode_url(genre_name_url)
+    genre_list = get_genre_list()
+    context_dict = {}
 
     if request.method == 'POST':
         form = MovieForm(request.POST)
         if form.is_valid():
             movie = form.save(commit=False)
-
-            try:
-                current_genre = Genre.objects.get(name=genre_name)
-                movie.genre = current_genre
-            except Genre.DoesNotExist:
-                return render_to_response('mytube/add_genre.html', {}, context)
+            movie_id = movie.id
+            # try:
+            #     current_genre = Genre.objects.get(name=genre_name)
+            #     movie.genre = current_genre
+            # except Genre.DoesNotExist:
+            #     return render_to_response('mytube/add_genre.html', {}, context)
 
             movie.views = 0
             movie.likes = 0
             movie.save()
 
-            return genre(request, genre_name_url)
+            genre = movie.genre
+            genre_list = get_genre_list()
+
+            context_dict = {'movie_name': movie.title,
+                            'movie_video': movie.video,
+                            'movie_pg': movie.pg,
+                            'movie_genre': movie.genre,
+                            'genre_name': genre.name,
+                            'genre_list': genre_list
+                            }
+
+            context_dict = {'form': form, 'genre_list': genre_list, 'movie_id': movie_id}
+            # return genre(request, genre_name_url)
+            return render_to_response('mytube/movie.html', context_dict, context)
         else:
             print(form.errors)
+            return render_to_response('mytube/add_movie.html', context_dict, context)
     else:
         form = MovieForm()
+        context_dict = {'form': form}
+        return render_to_response('mytube/add_movie.html', context_dict, context)
 
-    genre_list = get_genre_list()
-    context_dict = {'genre_name_url': genre_name_url,
-         'genre_name': genre_name, 'form': form, 'genre_list': genre_list}
-    return render_to_response('mytube/add_movie.html',context_dict, context)
+
 
 def decode_url(genre_name_url):
     genre_name = genre_name_url.replace('_', ' ')
@@ -321,13 +337,37 @@ def get_genre_list(max_results=0, starts_with=''):
 
     return genre_list
 
-def suggest_genre(request):
+def search_movie(request):
     context = RequestContext(request)
-    genre_list = []
+    movie_list = []
     starts_with = ''
+    genre_id = 0
+    pg = 0
     if request.method == 'GET':
-        starts_with = request.GET['suggestion']
+        contains = request.GET['title']
+        genre_id = int(request.GET['genre'])
+        pg = int(request.GET['pg'])
 
-    genre_list = get_genre_list(8, starts_with)
+    movie_list = get_movie_list(8, genre_id, contains, pg)
 
-    return render_to_response('mytube/genre_list.html', {'genre_list': genre_list }, context)
+    return render_to_response('mytube/movie_list.html', {'movie_list': movie_list}, context)
+
+def get_movie_list(max_results=0, genre_id=0, contains='', pg=0):
+
+    movie_list = []
+    if contains and genre_id > 0:
+        movie_list = Movie.objects.filter(title__contains=contains, genre__id=genre_id, pg__gte=pg)
+    else:
+        if contains:
+            movie_list = Movie.objects.filter(title__contains=contains, pg__gte=pg)
+        elif genre_id > 0:
+            movie_list = Movie.objects.filter(genre__id=genre_id, pg__gte=pg)
+        else:
+            movie_list = Movie.objects.filter(pg__gte=pg)
+
+
+    if max_results > 0:
+        if len(movie_list) > max_results:
+            movie_list = movie_list[:max_results]
+
+    return movie_list
