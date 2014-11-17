@@ -28,4 +28,6 @@ $(document).ready(function() {
             $('#movies').html(data);
         });
     });
+
+    $('.bxslider').bxSlider();
 });
