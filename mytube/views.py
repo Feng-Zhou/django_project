@@ -16,7 +16,7 @@ from django.shortcuts import redirect, get_object_or_404
 def index(request):
     context = RequestContext(request)
     genre_list = Genre.objects.order_by('-likes')[:5]
-    movie_list = Movie.objects.order_by('id')[:5]
+    movie_list = Movie.objects.order_by('-id')[:5]
 
     genre_list = get_genre_list()
     context_dict = {'genres': genre_list, 'movies': movie_list}
@@ -171,14 +171,17 @@ def add_movie(request):
                             'movie_pg': movie.pg,
                             'movie_genre': movie.genre,
                             'genre_name': genre.name,
-                            'genre_list': genre_list
+                            'genre_list': genre_list,
+                            'form': form,
+                            'movie_id': movie_id,
                             }
 
-            context_dict = {'form': form, 'genre_list': genre_list, 'movie_id': movie_id}
+            # context_dict = {'form': form, 'genre_list': genre_list, 'movie_id': movie_id}
             # return genre(request, genre_name_url)
             return render_to_response('mytube/movie.html', context_dict, context)
         else:
             print(form.errors)
+            context_dict = {'form': form}
             return render_to_response('mytube/add_movie.html', context_dict, context)
     else:
         form = MovieForm()
