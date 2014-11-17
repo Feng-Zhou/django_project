@@ -1,10 +1,14 @@
 body {
         padding-top: 60px;
         padding-bottom: 40px;
+        !background: #333333 !important;
       }
-      .sidebar-nav {
+
+.sidebar-nav {
         padding: 9px 0;
       }
+
+
 
       @media (max-width: 980px) {
         /* Enable use of floated navbar text */
@@ -14,3 +18,4 @@ body {
           padding-right: 5px;
         }
       }
+

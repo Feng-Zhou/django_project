@@ -4,9 +4,9 @@
     <head lang="en">
         <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
         <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
         <link href="{% static 'css/jquery.bxslider.css' %}" rel="stylesheet">
 
         <title>mytube - {% block title %}Share Free Movies on Youtube!{% endblock %}</title>
@@ -14,19 +14,26 @@
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
-               <div class="container">
-                   <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                       <span class="icon-bar"></span>
-                       <span class="icon-bar"></span>
-                       <span class="icon-bar"></span>
-                   </button>
-                   <a class="brand" href="/mytube/">MyTube</a>
-
-                   <div class="nav-collapse collapse">
-                       <ul class="nav pull-right">
+               <div class="container-fluid">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="/mytube/">MyTube</a>
+                    <div class="nav-collapse collapse">
+                        <p class="navbar-text pull-right">
+                            {% if user.is_authenticated %}
+                                Logged in as <a href="/mytube/profile" class="navbar-link">
+                                {{ user.username }}
+                            {% endif %}
+                            </a>
+                        </p>
+                        {% if user.is_authenticated %}
+                            (logged in as "{{ user.username }}")
+                        {% endif %}
+                       <ul class="nav">
                            {% if user.is_authenticated %}
-                            <li class="navbar-text">Welcome, {{ user.username }}!</li>
-                            <li><a href="/mytube/profile">Profile</a></li>
                             <li><a href="/mytube/logout/">Logout</a></li>
                            {% else %}
                             <li><a href="/mytube/register/">Register</a></li>
@@ -47,6 +54,10 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
+                <div class="span9">
+                    {% block body_block %}
+                    {% endblock %}
+                </div>
                 <div class="span3">
                     <div class="well sidebar-nav">
                         {% block sidebar %}
@@ -54,17 +65,28 @@
                         <ul class="nav nav-list">
                             <li class="nav-header">Find a Movie</li>
                             <form>
-                                <label></label>
-                                <li>
-                                    <select id="genre">
-                                        <option value="0">Select A Genre...</option>
-                                        {% for genre in genre_list %}
-                                            <option value="{{ genre.id }}">{{ genre.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </li>
-                                <li>Name<input type="text" name="title" value="" id="title" /></li>
-                                <li>PG Level<input type="number" name="pg" value="0" id="pg"></input></li>
+                                <!--<label></label>-->
+                                <!--<li>Genre-->
+                                    <!--<select id="genre">-->
+                                        <!--<option value="0">Select A Genre...</option>-->
+                                        <!--{% for genre in genre_list %}-->
+                                            <!--<option value="{{ genre.id }}">{{ genre.name }}</option>-->
+                                        <!--{% endfor %}-->
+                                    <!--</select>-->
+                                <!--</li>-->
+                                <!--<li>Name <input type="text" name="title" value="" id="title" /></li>-->
+                                <!--<li>PG Level<input type="number" name="pg" value="0" id="pg"></li>-->
+                                <label>Genre</label>
+                                <select id="genre">
+                                    <option value="0">Select A Genre...</option>
+                                    {% for genre in genre_list %}
+                                        <option value="{{ genre.id }}">{{ genre.name }}</option>
+                                    {% endfor %}
+                                </select><br />
+                                <label>Name</label>
+                                <input type="text" name="title" value="" id="title" /><br />
+                                <label>PG Level</label>
+                                <input type="number" name="pg" value="0" id="pg"><br />
                             </form>
                         </ul>
 
@@ -80,10 +102,7 @@
                     </div>
                 </div>
 
-                <div class="span9">
-                    {% block body_block %}
-                    {% endblock %}
-                </div>
+
             </div>
             <!--/row-->
             

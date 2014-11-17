@@ -8,24 +8,26 @@
         <h1>MyTube</h1><p>Share free movies on YouTube!<p>
 
         <div class="row-fluid">
-            <div class="span6">
-                <h2>Newly added 5 movies</h2>
-                {% if movies %}
-                    <ul class="bxslider">
-                        {% for movie in movies%}
-                            <li>
-                                {% video movie.video as movie_video %}
-                                    <a href="/mytube/movie/{{ movie.id }}">
-                                    {{movie.title}}<br />
-                                    <img src="{{ movie_video.thumbnail }}" height="400" width="600"/>
-                                    </a>
-                                {% endvideo %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <strong>No movies at present.</strong>
-                {% endif %}
+            <div class="well span6">
+                <form>
+                    <h2>Newly added 5 movies</h2>
+                    {% if movies %}
+                        <ul class="bxslider">
+                            {% for movie in movies%}
+                                <li>
+                                    {% video movie.video as movie_video %}
+                                        <a href="/mytube/movie/{{ movie.id }}">
+                                        {{movie.title}}<br />
+                                        <img src="{{ movie_video.thumbnail }}" height="400" width="600"/>
+                                        </a>
+                                    {% endvideo %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <strong>No movies at present.</strong>
+                    {% endif %}
+                </form>
              </div>
         </div>
 
