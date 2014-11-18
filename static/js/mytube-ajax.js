@@ -16,7 +16,7 @@ $(document).ready(function() {
             });
     });*/
 
-    $('#search').click(function(){
+    $('#search').on('click touchstart touchend', function(){
         var sel = document.getElementById('genre');
         var genre_id;
         genre_id = sel.options[sel.selectedIndex].value;

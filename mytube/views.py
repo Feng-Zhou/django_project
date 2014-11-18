@@ -151,6 +151,7 @@ def add_movie(request):
 
     if request.method == 'POST':
         form = MovieForm(request.POST)
+        genre_list = get_genre_list()
         if form.is_valid():
             movie = form.save(commit=False)
             movie_id = movie.id
@@ -182,11 +183,11 @@ def add_movie(request):
             return render_to_response('mytube/movie.html', context_dict, context)
         else:
             print(form.errors)
-            context_dict = {'form': form}
+            context_dict = {'form': form, 'genre_list': genre_list}
             return render_to_response('mytube/add_movie.html', context_dict, context)
     else:
         form = MovieForm()
-        context_dict = {'form': form}
+        context_dict = {'form': form, 'genre_list': genre_list}
         return render_to_response('mytube/add_movie.html', context_dict, context)
 
 
