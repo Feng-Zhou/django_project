@@ -3,13 +3,12 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>mytube - {% block title %}Share Free Movies on Youtube!{% endblock %}</title>
         <!-- Bootstrap -->
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen">
         <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
         <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
         <link href="{% static 'css/jquery.bxslider.css' %}" rel="stylesheet">
-
-        <title>mytube - {% block title %}Share Free Movies on Youtube!{% endblock %}</title>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -25,29 +24,21 @@
                         <p class="navbar-text pull-right">
                             {% if user.is_authenticated %}
                                 Logged in as <a href="/mytube/profile" class="navbar-link">
-                                {{ user.username }}
+                                {{ user.username }}</a>
                             {% endif %}
-                            </a>
                         </p>
-                        {% if user.is_authenticated %}
-                            (logged in as "{{ user.username }}")
-                        {% endif %}
-                       <ul class="nav">
+
+                        <ul class="nav">
                            {% if user.is_authenticated %}
                             <li><a href="/mytube/logout/">Logout</a></li>
+                            <li><a href="/mytube/add_movie/">Add a Movie</a></li>
                            {% else %}
                             <li><a href="/mytube/register/">Register</a></li>
                             <li><a href="/mytube/login/">Login</a></li>
                            {% endif %}
-                       </ul>
-                       <ul class="nav">
-                           {% if user.is_authenticated %}
-                            <li><a href="/mytube/add_movie/">Add a Movie</a></li>
-                           {% endif %}
-                           <li><a href="/mytube/about/">About</a></li>
-                       </ul>
-                   </div>
-                   <!--/.nav-collapse -->
+                            <li><a href="/mytube/about/">About</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
                </div>
             </div>
         </div>
@@ -60,33 +51,20 @@
                 </div>
                 <div class="span3">
                     <div class="well sidebar-nav">
-                        {% block sidebar %}
-
                         <ul class="nav nav-list">
                             <li class="nav-header">Find a Movie</li>
                             <form>
-                                <!--<label></label>-->
-                                <!--<li>Genre-->
-                                    <!--<select id="genre">-->
-                                        <!--<option value="0">Select A Genre...</option>-->
-                                        <!--{% for genre in genre_list %}-->
-                                            <!--<option value="{{ genre.id }}">{{ genre.name }}</option>-->
-                                        <!--{% endfor %}-->
-                                    <!--</select>-->
-                                <!--</li>-->
-                                <!--<li>Name <input type="text" name="title" value="" id="title" /></li>-->
-                                <!--<li>PG Level<input type="number" name="pg" value="0" id="pg"></li>-->
                                 <label>Genre</label>
-                                <select id="genre">
+                                <select id="genre" width="100">
                                     <option value="0">Select A Genre...</option>
                                     {% for genre in genre_list %}
                                         <option value="{{ genre.id }}">{{ genre.name }}</option>
                                     {% endfor %}
                                 </select><br />
                                 <label>Name</label>
-                                <input type="text" name="title" value="" id="title" /><br />
+                                <input type="text" name="title" value="" id="title" width="100" /><br />
                                 <label>PG Level</label>
-                                <input type="number" name="pg" value="0" id="pg"><br />
+                                <input type="number" name="pg" value="0" id="pg" width="100" /><br />
                             </form>
                         </ul>
 
@@ -98,29 +76,32 @@
                                 {% include 'mytube/movie_list.html' with movie_list=movie_list %}
                             {% endif %}
                         </div>
-                        {% endblock %}
                     </div>
                 </div>
-
-
             </div>
-            <!--/row-->
-            
-            <hr>
-            
-            <footer>
-                <p>&copy; 2014 MyTube: Share free movies on YouTube! Powered by Django</p>
-            </footer>
-            
-        </div>
-        <!--/.fluid-container-->
+        </div><!--/.fluid-container-->
+
+         <!-- Footer
+================================================== -->
+        <footer class="inline">
+          <div class="container-fluid">
+            <ul class="bs-docs-footer-links muted">
+              <li>Movie Genres:</li>
+              {% for genre in genre_list %}
+                <li>&middot;</li>
+                <li><a href="/mytube/genre/{{ genre.url }}/">{{ genre.name }}</a></li>
+              {% endfor %}
+            </ul>
+            <p>&copy; 2014 MyTube: Share free movies on YouTube! Powered by Django</p>
+          </div>
+        </footer>
+
         <script src="{% static 'js/jquery-2.1.1.js' %}"></script>
+        <script src="{% static 'js/bootstrap.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/mytube-ajax.js' %}"></script>
         <script src="{% static 'js/jquery.bxslider.min.js' %}"></script>
         <script src="{% static 'js/jquery.fitvids.js' %}"></script>
 
     </body>
-
-
 </html>

@@ -5,19 +5,17 @@
 
 {% block body_block %}
     <div class="hero-unit">
-        <div class="container-fluid">
-            <h1>{{ movie_name }}</h1>
-            <hr>
-
+        <h1>{{ movie_name }}</h1>
+        <hr>
+        <div class="movie">
             {% video movie_video as my_video %}
-                {% video my_video 'small' %}
+                {% video my_video "100%x100%" %}
             {% endvideo %}
-
-            <hr>
-            <ul>
-                <li>Genre: {{ genre_name }} </li>
-                <li>PG Level: PG{{ movie_pg }} </li>
-            </ul>
         </div>
+
+        <ul>
+            <li>Genre: {{ genre_name }} </li>
+            <li>PG Level: PG{{ movie_pg }} </li>
+        </ul>
     </div>
 {% endblock %}

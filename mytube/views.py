@@ -90,12 +90,13 @@ def movie(request, movie_id):
 
     context_dict = {'movie_name': m.title,
                     'movie_video': m.video,
+                    'movie_url': str(m.video),
                     'movie_pg': m.pg,
                     'movie_genre': m.genre,
                     'genre_name': genre.name,
                     'genre_list': genre_list
                     }
-
+    print(str(m.video))
     # try:
     #     movie = Movie.objects.get(genre=genre_name,  )
     #     context_dict['movies'] = movies
